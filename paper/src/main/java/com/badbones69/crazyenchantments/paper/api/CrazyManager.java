@@ -66,7 +66,7 @@ public class CrazyManager {
 
     @NotNull
     private final CrazyEnchantments plugin = JavaPlugin.getPlugin(CrazyEnchantments.class);
-    
+
     @NotNull
     private final Starter starter = this.plugin.getStarter();
 
@@ -99,10 +99,10 @@ public class CrazyManager {
 
     @NotNull
     private final ShopManager shopManager = this.starter.getShopManager();
-    
+
     @NotNull
     private final BowEnchantmentManager bowEnchantmentManager = this.starter.getBowEnchantmentManager();
-    
+
     @NotNull
     private final ArmorEnchantmentManager armorEnchantmentManager = this.starter.getArmorEnchantmentManager();
 
@@ -127,6 +127,9 @@ public class CrazyManager {
     private int defaultLimit;
     private int defaultBaseLimit;
     private boolean checkLimitPermission;
+
+    private int CESuccessOverride;
+    private int CEFailureOverride;
 
     /**
      * Loads everything for the Crazy Enchantments plugin.
@@ -205,6 +208,9 @@ public class CrazyManager {
         this.rageIncrement = config.getDouble("Settings.EnchantmentOptions.Rage-Increase", 0.1);
         setDropBlocksBlast(config.getBoolean("Settings.EnchantmentOptions.Drop-Blocks-For-Blast", true));
         setDropBlocksVeinMiner(config.getBoolean("Settings.EnchantmentOptions.Drop-Blocks-For-VeinMiner", true));
+
+        this.CEFailureOverride = config.getInt("Settings.CEFailureOverride", -1);
+        this.CESuccessOverride = config.getInt("Settings.CESuccessOverride", -1);
 
         this.enchantmentBookSettings.populateMaps();
 
@@ -948,4 +954,10 @@ public class CrazyManager {
     public int pickLevel(int min, int max) {
         return min + new Random().nextInt((max + 1) - min);
     }
+
+    /** Gets the success override from the config. Default -1 means no override should be used */
+    public int getCESuccessOverride() { return CESuccessOverride; }
+
+    /** Gets the failure override from the config. Default -1 means no override should be used */
+    public int getCEFailureOverride() { return CEFailureOverride; }
 }
