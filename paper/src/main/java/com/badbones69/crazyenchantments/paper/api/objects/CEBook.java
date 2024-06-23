@@ -40,14 +40,14 @@ public class CEBook {
     private boolean glowing;
     private int destroyRate;
     private int successRate;
-    
+
     /**
      * @param enchantment Enchantment you want.
      */
     public CEBook(CEnchantment enchantment) {
         this(enchantment, 1, 1);
     }
-    
+
     /**
      * @param enchantment Enchantment you want.
      * @param level Tier of the enchantment.
@@ -55,7 +55,7 @@ public class CEBook {
     public CEBook(CEnchantment enchantment, int level) {
         this(enchantment, level, 1);
     }
-    
+
     /**
      * @param enchantment Enchantment you want.
      * @param level Tier of the enchantment.
@@ -76,7 +76,7 @@ public class CEBook {
         this.destroyRate = this.methods.percentPick(destroyMax, destroyMin);
         this.successRate = this.methods.percentPick(successMax, successMin);
     }
-    
+
     /**
      * @param enchantment Enchantment you want.
      * @param level Tier of the enchantment.
@@ -85,7 +85,7 @@ public class CEBook {
     public CEBook(CEnchantment enchantment, int level, Category category) {
         this(enchantment, level, 1, category);
     }
-    
+
     /**
      * @param enchantment Enchantment you want.
      * @param level Tier of the enchantment.
@@ -100,7 +100,7 @@ public class CEBook {
         this.destroyRate = this.methods.percentPick(category.getMaxDestroyRate(), category.getMinDestroyRate());
         this.successRate = this.methods.percentPick(category.getMaxSuccessRate(), category.getMinSuccessRate());
     }
-    
+
     /**
      * @param enchantment Enchantment you want.
      * @param level Tier of the enchantment.
@@ -116,7 +116,7 @@ public class CEBook {
         this.destroyRate = destroyRate;
         this.successRate = successRate;
     }
-    
+
     /**
      * Get the CEEnchantment.
      * @return The CEEnchantment.
@@ -124,7 +124,7 @@ public class CEBook {
     public CEnchantment getEnchantment() {
         return this.enchantment;
     }
-    
+
     /**
      * @param enchantment Set the enchantment.
      */
@@ -133,7 +133,7 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * If the item will be glowing or not.
      * @return True if glowing and false if not.
@@ -141,7 +141,7 @@ public class CEBook {
     public boolean getGlowing() {
         return this.glowing;
     }
-    
+
     /**
      * @param toggle Toggle on or off the glowing effect.
      */
@@ -150,7 +150,7 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * Get the amount of the item.
      * @return The amount that it will be as an ItemStack.
@@ -158,7 +158,7 @@ public class CEBook {
     public int getAmount() {
         return this.amount;
     }
-    
+
     /**
      * @param amount Set the amount of books.
      */
@@ -167,7 +167,7 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * Get the level of the book.
      * @return The level of the book.
@@ -175,7 +175,7 @@ public class CEBook {
     public int getLevel() {
         return this.level;
     }
-    
+
     /**
      * @param level Set the tier of the enchantment.
      */
@@ -184,15 +184,15 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * Get the destroy rate on the book.
-     * @return Destroy rate of the book.
+     * @return Destroy rate of the book or the override value set in config.yml
      */
     public int getDestroyRate() {
-        return this.destroyRate;
+        return this.starter.getCrazyManager().getCEFailureOverride() == -1 ? this.destroyRate : this.starter.getCrazyManager().getCEFailureOverride();
     }
-    
+
     /**
      * @param destroyRate Set the destroy rate on the book.
      */
@@ -201,15 +201,15 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * Get the success rate on the book.
-     * @return The success rate of the book.
+     * @return The success rate of the book or the override value set in config.yml.
      */
     public int getSuccessRate() {
-        return this.successRate;
+        return this.starter.getCrazyManager().getCESuccessOverride() == -1 ? this.successRate : this.starter.getCrazyManager().getCESuccessOverride();
     }
-    
+
     /**
      * @param successRate Set the success rate on the book.
      */
@@ -218,7 +218,7 @@ public class CEBook {
 
         return this;
     }
-    
+
     /**
      * @return Return the book as an ItemBuilder.
      */
@@ -233,14 +233,14 @@ public class CEBook {
                 }
             } else {
                 lore.add(ColorUtils.color(bookLine)
-                .replace("%Destroy_Rate%", String.valueOf(this.destroyRate)).replace("%destroy_rate%", String.valueOf(this.destroyRate))
-                .replace("%Success_Rate%", String.valueOf(this.successRate)).replace("%success_rate%", String.valueOf(this.successRate)));
+                        .replace("%Destroy_Rate%", String.valueOf(this.destroyRate)).replace("%destroy_rate%", String.valueOf(this.destroyRate))
+                        .replace("%Success_Rate%", String.valueOf(this.successRate)).replace("%success_rate%", String.valueOf(this.successRate)));
             }
         }
 
         return this.enchantmentBookSettings.getNormalBook().setAmount(this.amount).setName(name).setLore(lore).setGlow(this.glowing);
     }
-    
+
     /**
      * @return Return the book as an ItemStack.
      */
